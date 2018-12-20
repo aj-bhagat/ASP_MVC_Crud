@@ -24,12 +24,6 @@ namespace MvcCrud.Controllers
                 return View(dtblProduct);
         }
 
-        // GET: Product/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: Product/Create
         public ActionResult Create()
         {
