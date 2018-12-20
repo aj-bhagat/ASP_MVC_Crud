@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data;
 using System.Data.SqlClient;
+using MvcCrud.Models;
 
 namespace MvcCrud.Controllers
 {
@@ -24,10 +25,10 @@ namespace MvcCrud.Controllers
                 return View(dtblProduct);
         }
 
-        // GET: Product/Create
+        [HttpGet]
         public ActionResult Create()
         {
-            return View();
+            return View(new ProductModel());
         }
 
         // POST: Product/Create
