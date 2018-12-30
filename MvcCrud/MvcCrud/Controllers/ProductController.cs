@@ -59,7 +59,25 @@ namespace MvcCrud.Controllers
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            ProductModel productModel = new ProductModel();
+            DataTable dtblProduct = new DataTable();
+            using (SqlConnection sqlcon = new SqlConnection(connection))
+            {
+                sqlcon.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PRODUCT where ProductID=@ProductID", sqlcon);
+                sqlDa.SelectCommand.Parameters.AddWithValue("@ProductID", id);
+                sqlDa.Fill(dtblProduct);             
+            }
+            if(dtblProduct.Rows.Count==1)
+            {
+                productModel.ProductID = Convert.ToInt32(dtblProduct.Rows[0][0].ToString());
+                productModel.ProductName = dtblProduct.Rows[0][1].ToString();
+                productModel.Price = Convert.ToDecimal(dtblProduct.Rows[0][2].ToString());
+                productModel.Count = Convert.ToInt32(dtblProduct.Rows[0][3].ToString());
+                return View(productModel);
+            }
+            else
+                return RedirectToAction("Index");
         }
 
         // POST: Product/Edit/5
