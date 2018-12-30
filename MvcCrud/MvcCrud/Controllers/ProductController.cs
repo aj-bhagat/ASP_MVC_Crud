@@ -25,20 +25,35 @@ namespace MvcCrud.Controllers
                 return View(dtblProduct);
         }
 
+        [HttpGet]
+        public ActionResult Create()
+        {
+                return View(new ProductModel());
+        }
+
+        // POST: Product/Create
         [HttpPost]
         public ActionResult Create(ProductModel productModel)
         {
-            using (SqlConnection sqlcon = new SqlConnection(connection))
+            try
             {
-                sqlcon.Open();
-                string query = "INSERT INTO Product VALUES(@ProductName,@Price,@Cost)";
-                SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
-                sqlcmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
-                sqlcmd.Parameters.AddWithValue("@Price", productModel.Price);
-                sqlcmd.Parameters.AddWithValue("@Cost", productModel.Count);
-                sqlcmd.ExecuteNonQuery();
+                using (SqlConnection sqlcon = new SqlConnection(connection))
+                {
+                    sqlcon.Open();
+                    string query = "INSERT INTO Product VALUES(@ProductName,@Price,@Cost)";
+                    SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
+                    sqlcmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
+                    sqlcmd.Parameters.AddWithValue("@Price", productModel.Price);
+                    sqlcmd.Parameters.AddWithValue("@Cost", productModel.Count);
+                    sqlcmd.ExecuteNonQuery();
+                }
+
+                return RedirectToAction("Index");
             }
-               return RedirectToAction("Index");
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: Product/Edit/5
