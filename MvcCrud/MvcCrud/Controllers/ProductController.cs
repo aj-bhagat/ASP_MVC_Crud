@@ -44,7 +44,7 @@ namespace MvcCrud.Controllers
                     SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
                     sqlcmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
                     sqlcmd.Parameters.AddWithValue("@Price", productModel.Price);
-                    sqlcmd.Parameters.AddWithValue("@Cost", productModel.Count);
+                    sqlcmd.Parameters.AddWithValue("@Count", productModel.Count);
                     sqlcmd.ExecuteNonQuery();
                 }
 
@@ -82,11 +82,21 @@ namespace MvcCrud.Controllers
 
         // POST: Product/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ProductModel productModel)
         {
             try
             {
-                // TODO: Add update logic here
+                using (SqlConnection sqlcon = new SqlConnection(connection))
+                {
+                    sqlcon.Open();
+                    string query = "UPDATE Product SET ProductName=@ProductName, Price=@Price,Count=@Count WHERE ProductID=@ProductID";
+                    SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
+                    sqlcmd.Parameters.AddWithValue("@ProductID", productModel.ProductID);
+                    sqlcmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
+                    sqlcmd.Parameters.AddWithValue("@Price", productModel.Price);
+                    sqlcmd.Parameters.AddWithValue("@Count", productModel.Count);
+                    sqlcmd.ExecuteNonQuery();
+                }
 
                 return RedirectToAction("Index");
             }
