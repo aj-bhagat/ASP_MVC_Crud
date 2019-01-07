@@ -40,7 +40,7 @@ namespace MvcCrud.Controllers
                 using (SqlConnection sqlcon = new SqlConnection(connection))
                 {
                     sqlcon.Open();
-                    string query = "INSERT INTO Product VALUES(@ProductName,@Price,@Cost)";
+                    string query = "INSERT INTO Product VALUES(@ProductName,@Price,@Count)";
                     SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
                     sqlcmd.Parameters.AddWithValue("@ProductName", productModel.ProductName);
                     sqlcmd.Parameters.AddWithValue("@Price", productModel.Price);
@@ -109,7 +109,15 @@ namespace MvcCrud.Controllers
         // GET: Product/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            using (SqlConnection sqlcon = new SqlConnection(connection))
+            {
+                sqlcon.Open();
+                string query = "DELETE from Product WHERE ProductID=@ProductID";
+                SqlCommand sqlcmd = new SqlCommand(query, sqlcon);
+                sqlcmd.Parameters.AddWithValue("@ProductID", id);
+                sqlcmd.ExecuteNonQuery();
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Product/Delete/5
